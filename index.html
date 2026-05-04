@@ -732,6 +732,7 @@
         if (cols.length < 10) continue; // need at least through youth retention
         rows.push(cols);
       }
+      if (rows.length) console.log('[DEBUG] rows:', rows.length, 'r[19] sample:', JSON.stringify(rows[0][19]));
       return rows;
     }
 
