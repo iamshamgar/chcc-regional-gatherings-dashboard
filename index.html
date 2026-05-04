@@ -655,7 +655,7 @@
     // Otherwise filters on column index 19 (column T — "Event").
     function filteredRows() {
       if (currentEvent === 'all') return rawRows;
-      return rawRows.filter(r => (r[19] || '').trim() === currentEvent);
+      return rawRows.filter(r => (r[19] || '').replace(/\s+/g, ' ').trim() === currentEvent);
     }
 
     const LIVE_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vStR1ZJjVKV6bsiZ48LgiLeAR-eKpT5ywiP-pZoQL3utQvnBCQGbePpfwHhBxmzxsVAxoeyBZ-vNfBN/pub?gid=151037683&single=true&output=csv';
