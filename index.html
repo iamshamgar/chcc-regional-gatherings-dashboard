@@ -446,6 +446,9 @@
     <button data-event="East Coast 2026">East Coast 2026</button>
   </div>
 
+  <div id="noDataOverlay" style="display:none;position:relative;text-align:center;padding:4rem 1rem;color:#94a3b8;font-size:1.25rem;">
+    No survey data yet for <span id="noDataEvent"></span>.
+  </div>
   <nav id="mainNav">
     <button class="active" data-panel="overview">Overview</button>
     <button data-panel="churches">Our Churches</button>
@@ -935,14 +938,20 @@
     //  UPDATE DASHBOARD
     // =========================================================
     function updateDashboard(rows) {
-      if (!rows.length) {
-        if (currentEvent !== 'all') {
-          document.getElementById('responseCount').textContent = '0 (' + currentEvent + ')';
-          document.getElementById('kpiResponses').textContent = '0';
-          document.getElementById('kpiChurches').textContent = '0';
-        }
+      const overlay = document.getElementById('noDataOverlay');
+      const nav = document.getElementById('mainNav');
+      if (!rows.length && currentEvent !== 'all') {
+        document.getElementById('noDataEvent').textContent = currentEvent;
+        document.getElementById('responseCount').textContent = '0 (' + currentEvent + ')';
+        overlay.style.display = 'block';
+        nav.style.display = 'none';
+        document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
         return;
       }
+      overlay.style.display = 'none';
+      nav.style.display = '';
+      document.querySelectorAll('.panel').forEach(p => p.style.display = '');
+      if (!rows.length) return;
 
       const total = rows.length;
       // When a specific event is selected, show count + event name; otherwise show total across all events.
