@@ -721,6 +721,8 @@
     }
 
     function parseCSV(text) {
+      // Collapse newlines inside quoted fields so split('\n') works correctly
+      text = text.replace(/"[^"]*"/g, m => m.replace(/\n/g, ' '));
       const lines = text.split('\n').filter(l => l.trim());
       if (lines.length < 2) return [];
       // Skip header row
@@ -932,7 +934,14 @@
     //  UPDATE DASHBOARD
     // =========================================================
     function updateDashboard(rows) {
-      if (!rows.length) return;
+      if (!rows.length) {
+        if (currentEvent !== 'all') {
+          document.getElementById('responseCount').textContent = '0 (' + currentEvent + ')';
+          document.getElementById('kpiResponses').textContent = '0';
+          document.getElementById('kpiChurches').textContent = '0';
+        }
+        return;
+      }
 
       const total = rows.length;
       // When a specific event is selected, show count + event name; otherwise show total across all events.
